@@ -25,13 +25,14 @@ Para el dominio existente y su proxy externo, primero inicia este Compose (sin p
 
 ## Plataforma de acreditación (003 y 004)
 
-`003_platform.sql` crea el modelo transaccional: mandantes, sedes, políticas, contratistas, servicios, usuarios y sesiones, catálogo documental con revisiones, perfiles y matriz con vigencia temporal, trabajadores, asignaciones, versiones de evidencia, responsables de prevención, períodos mensuales, nómina, resoluciones, notificaciones, cortes diarios y auditoría de solo inserción (un trigger impide modificarla). `004_catalog.sql` carga el catálogo documental inicial y feriados 2026 editables.
+`003_platform.sql` crea el modelo transaccional: mandantes, sedes, políticas, contratistas, servicios, usuarios y sesiones, catálogo documental con revisiones, perfiles y matriz con vigencia temporal, trabajadores, asignaciones, versiones de evidencia, responsables de prevención, períodos mensuales, nómina, resoluciones, notificaciones, cortes diarios y auditoría de solo inserción (un trigger impide modificarla). `004_catalog.sql` carga el catálogo documental inicial y feriados 2026 editables. `005_review_fixes.sql` agrega vencimiento obligatorio por documento (`no_expiry`), presentación completa y política por período, e idempotencia de cargas por usuario.
 
 Ambos son idempotentes. En una base **existente** (volumen ya inicializado) no se ejecutan solos; aplícalos una vez:
 
 ```bash
 docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/003_platform.sql
 docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/004_catalog.sql
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/005_review_fixes.sql
 docker compose exec backend python -m app.cli create-admin correo@empresa.cl "Nombre"
 ```
 
