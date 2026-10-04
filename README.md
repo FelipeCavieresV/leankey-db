@@ -19,9 +19,23 @@ Para ejecutar también el frontend local:
 docker compose --profile web up -d --build --wait
 ```
 
-Web: http://localhost:8080. Nginx reenvía `/api` al servicio `backend`, manteniendo ese prefijo. Los puertos del host están vinculados a localhost. Esta implementación todavía no incorpora autenticación: conserva este acceso local hasta incorporar identidad y permisos.
+Web: http://localhost:8080. Nginx reenvía `/api` al servicio `backend`, manteniendo ese prefijo. Los puertos del host están vinculados a localhost. Toda la API, salvo salud, exige sesión; el reporte importado es solo para administradores.
 
 Para el dominio existente y su proxy externo, primero inicia este Compose (sin perfil web) y después ejecuta `docker compose up -d --build --wait` en `../leankey-front`. Ese Compose conecta el frontend a `proxy` y a `leankey_default`. No es necesario publicar PostgreSQL hacia la LAN.
+
+## Plataforma de acreditación (003 y 004)
+
+`003_platform.sql` crea el modelo transaccional: mandantes, sedes, políticas, contratistas, servicios, usuarios y sesiones, catálogo documental con revisiones, perfiles y matriz con vigencia temporal, trabajadores, asignaciones, versiones de evidencia, responsables de prevención, períodos mensuales, nómina, resoluciones, notificaciones, cortes diarios y auditoría de solo inserción (un trigger impide modificarla). `004_catalog.sql` carga el catálogo documental inicial y feriados 2026 editables.
+
+Ambos son idempotentes. En una base **existente** (volumen ya inicializado) no se ejecutan solos; aplícalos una vez:
+
+```bash
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/003_platform.sql
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/004_catalog.sql
+docker compose exec backend python -m app.cli create-admin correo@empresa.cl "Nombre"
+```
+
+Los archivos de evidencia se guardan en el volumen `files_data` (`/data/files` del backend). Respáldalo junto con PostgreSQL: uno sin el otro no permite restaurar.
 
 ## Tablas y datos
 

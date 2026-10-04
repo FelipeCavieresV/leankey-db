@@ -23,6 +23,11 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-leanley}:${POSTGRES_PASSWORD}@db:5432/leankey
       CORS_ORIGINS: '["http://localhost:5173","http://localhost:8080"]'
+      STORAGE_DIR: /data/files
+      TIMEZONE: America/Santiago
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    volumes:
+      - files_data:/data/files
     ports:
       - "127.0.0.1:${API_PORT:-8000}:8000"
     depends_on:
@@ -44,3 +49,4 @@ services:
         condition: service_healthy
 volumes:
   postgres_data:
+  files_data:
