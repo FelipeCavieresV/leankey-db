@@ -104,3 +104,7 @@ docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/0
 ```
 
 La migración es idempotente. Las consultas históricas comprueban el alcance actual del usuario antes de cargar los cortes guardados.
+
+### 016 — Turnos y holguras
+
+`init/016_shifts.sql` agrega programación y versiones inmutables vinculadas a decisiones, plantillas recurrentes, políticas de holguras y excepciones horarias. Los movimientos reales referencian la versión evaluada y conservan su evaluación. Las propuestas no sustituyen versiones aprobadas; los registros históricos no se actualizan ni eliminan. Los avisos externos de excepciones se registran pendientes de proveedor, sin afirmar entrega. Aplicar después de 015; validar primero en una base desechable. No ejecutar en producción sin autorización.
