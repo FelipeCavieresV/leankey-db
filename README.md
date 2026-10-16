@@ -74,3 +74,11 @@ docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/0
 El reporte más reciente se selecciona por fecha; puedes consultar otro usando `?cutoff=YYYY-MM-DD`. El generador presupone las mismas columnas del importador original. No hay sincronización automática con KSEC. Las actualizaciones futuras del esquema requieren migraciones: `CREATE TABLE IF NOT EXISTS` no altera tablas existentes.
 
 Documentación de referencia: [imagen oficial PostgreSQL](https://hub.docker.com/_/postgres) y [conexiones Psycopg](https://www.psycopg.org/psycopg3/docs/basic/usage.html).
+
+## Documentos colectivos (013)
+
+`init/013_collective_documents.sql` agrega originales restringidos, asignaciones confirmadas, extractos verificados y versiones individuales. Aplicar después de 012 en una base existente, con respaldo previo. No se aplica automáticamente sobre un volumen existente.
+
+```bash
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/013_collective_documents.sql
+```
