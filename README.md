@@ -112,3 +112,7 @@ La migración es idempotente. Las consultas históricas comprueban el alcance ac
 ### 017 — Marcaciones y control de acceso
 
 `init/017_access_control.sql` agrega políticas por instalación, QR dinámicos, identidad de persona, hora del evento, método, puerta e idempotencia al libro de movimientos. Conserva declaraciones de salida, resoluciones identificadas, incidencias y contingencias sincronizadas con revisiones inmutables. Completa metadatos de movimientos anteriores sin alterar su dirección, resultado ni fecha original. Aplicar después de 016; validar primero en PostgreSQL desechable. El registro no certifica asistencia ni transforma permanencia en horas trabajadas. No ejecutar en producción sin autorización.
+
+### 018 — Seguridad del recinto y reporte de dotación
+
+`init/018_security_staffing.sql` agrega vigencias de exigencia opcional por servicio, propuestas de dotación por función/franja, validaciones de mandante y reportes mensuales versionados con corte y fuentes conservadas. Todas las filas son inmutables; corregir crea nuevas propuestas o versiones. No agrega descuentos ni calcula jornadas u horas trabajadas. Aplicar después de 017 y validar primero en PostgreSQL desechable. No ejecutar en producción sin autorización.
