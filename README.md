@@ -116,3 +116,9 @@ La migración es idempotente. Las consultas históricas comprueban el alcance ac
 ### 018 — Seguridad del recinto y reporte de dotación
 
 `init/018_security_staffing.sql` agrega vigencias de exigencia opcional por servicio, propuestas de dotación por función/franja, validaciones de mandante y reportes mensuales versionados con corte y fuentes conservadas. Todas las filas son inmutables; corregir crea nuevas propuestas o versiones. No agrega descuentos ni calcula jornadas u horas trabajadas. Aplicar después de 017 y validar primero en PostgreSQL desechable. No ejecutar en producción sin autorización.
+
+## Vehículos, maquinaria y operadores (VEH-01 a VEH-05)
+
+`init/019_equipment.sql`, posterior a 018, agrega identidades únicas por patente/serie, relaciones de uso con propietario y fechas, cierres, requisitos por mandante, matrices por tipo/uso con vigencia, versiones documentales privadas por mandante/contratista, revisión exclusiva de LeanKey, propuestas/resoluciones de aplicabilidad y vínculos explícitos con operadores. El libro de movimientos de equipos es independiente de marcaciones personales: una entrada sigue abierta hasta una salida registrada, aunque venza la documentación. Las tablas son de solo inserción; no se sustituyen ni eliminan evidencias anteriores.
+
+Las matrices y funciones autorizadas se configuran mediante la aplicación; la migración no inventa documentos obligatorios ni habilita equipos por defecto. El transporte de personas no pertenece a los cuatro tipos de alcance inicial. Los cortes documentales existentes conservan su contenido; solo los nuevos cortes incorporan el universo de equipos. Aplicar primero en PostgreSQL desechable; producción requiere autorización expresa.
