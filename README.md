@@ -130,3 +130,11 @@ Las matrices y funciones autorizadas se configuran mediante la aplicación; la m
 Las tablas nuevas son de solo inserción. Las medidas existentes conservan responsable y admiten ejecución en curso; su plazo original no se sustituye al ampliar. Los reposos vinculan restricciones existentes de dotación para conservar habilitación y programación afectada, pero los conteos preventivos solo usan sus propios respaldos, sin mezclar licencias comunes. La aplicación une fechas inclusivas por identidad de persona y deduplica eventos comunes dentro del alcance permitido. No se crean tasas, calificaciones de riesgo ni porcentajes documentales preventivos.
 
 La migración se valida primero en PostgreSQL desechable. Repetirla no duplica los eventos migrados. Su aplicación en producción requiere autorización expresa.
+
+## Reporte preventivo mensual (RPM-01 a RPM-05)
+
+`init/021_preventive_monthly.sql`, después de 020, agrega vigencias de exigencia por servicio, políticas preventivas de días hábiles por mandante/período, borradores con revisión optimista, versiones mensuales enviadas y decisiones de Prevención. Exigencias, políticas, envíos y revisiones son de solo inserción. Solo el borrador puede actualizarse, sin alterar versiones enviadas o aceptadas.
+
+La declaración del borrador puede ser nula: preparar registros no presume ausencia de eventos. Un envío conserva cifras y fuentes de eventos, personas, reposos y gestión; la aplicación consolida por identidad de evento/persona para evitar dobles conteos. Sin actividad requiere confirmación y contraste; falta de envío se informa con cifras desconocidas, no cero. Los calendarios preventivos son independientes de los SLA documentales y conservan feriados y parámetros usados por el período. La migración no crea declaraciones históricas ni reportes aceptados.
+
+Validar primero en PostgreSQL desechable inicializado hasta 021. Su ejecución en producción requiere autorización expresa.
