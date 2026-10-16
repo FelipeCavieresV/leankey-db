@@ -108,3 +108,7 @@ La migración es idempotente. Las consultas históricas comprueban el alcance ac
 ### 016 — Turnos y holguras
 
 `init/016_shifts.sql` agrega programación y versiones inmutables vinculadas a decisiones, plantillas recurrentes, políticas de holguras y excepciones horarias. Los movimientos reales referencian la versión evaluada y conservan su evaluación. Las propuestas no sustituyen versiones aprobadas; los registros históricos no se actualizan ni eliminan. Los avisos externos de excepciones se registran pendientes de proveedor, sin afirmar entrega. Aplicar después de 015; validar primero en una base desechable. No ejecutar en producción sin autorización.
+
+### 017 — Marcaciones y control de acceso
+
+`init/017_access_control.sql` agrega políticas por instalación, QR dinámicos, identidad de persona, hora del evento, método, puerta e idempotencia al libro de movimientos. Conserva declaraciones de salida, resoluciones identificadas, incidencias y contingencias sincronizadas con revisiones inmutables. Completa metadatos de movimientos anteriores sin alterar su dirección, resultado ni fecha original. Aplicar después de 016; validar primero en PostgreSQL desechable. El registro no certifica asistencia ni transforma permanencia en horas trabajadas. No ejecutar en producción sin autorización.
