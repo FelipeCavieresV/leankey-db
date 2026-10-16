@@ -92,3 +92,15 @@ La migración es idempotente. Aplicar después de 013, con respaldo previo, úni
 ```bash
 docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/014_labor_certification.sql
 ```
+
+## Indicadores y universos del dashboard (015)
+
+`init/015_compliance_kpis.sql` agrega declaraciones históricas de necesidad de equipos por servicio (`service_equipment_scopes`) y cortes documentales íntegros por servicio y día (`compliance_cuts`). Ambos son de solo inserción. Los cortes incluyen sus universos para distinguir variaciones de dotación/aplicabilidad de cumplimiento documental. La migración no inventa registros de equipos ni rellena cortes históricos anteriores con datos actuales.
+
+Aplicar después de 014, con respaldo previo y al autorizar el despliegue:
+
+```bash
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/015_compliance_kpis.sql
+```
+
+La migración es idempotente. Las consultas históricas comprueban el alcance actual del usuario antes de cargar los cortes guardados.
