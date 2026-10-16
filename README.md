@@ -82,3 +82,13 @@ Documentación de referencia: [imagen oficial PostgreSQL](https://hub.docker.com
 ```bash
 docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/013_collective_documents.sql
 ```
+
+## Certificación laboral y decisiones de pago (014)
+
+`init/014_labor_certification.sql` crea calendarios mensuales por servicio con matriz, validación legal, aceptación y versiones inmutables; vincula cada período a su calendario y permite fechas de carga aún no configuradas. Los períodos existentes conservan sus datos y política histórica (`calendar_legacy`); no se les inventa una fecha legal. Los nuevos períodos requieren matriz y calendario aceptados. También crea las comunicaciones inmutables de decisiones de pago y las solicitudes de revisión con una sola abierta por comunicación. Los montos y términos de retención/liberación se conservan en el detalle de las versiones de decisiones existentes.
+
+La migración es idempotente. Aplicar después de 013, con respaldo previo, únicamente cuando se autorice el despliegue:
+
+```bash
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U leanley -d leankey < init/014_labor_certification.sql
+```
