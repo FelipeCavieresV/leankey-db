@@ -38,6 +38,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+  # SOP-04: watchdog externo. Detecta una caída de la API o de la base aunque el backend esté detenido y alerta a
+  # la guardia fuera de banda (ONCALL_WEBHOOK_URL u ONCALL_EMAILS con SMTP_*).
+  watchdog:
+    build: ../leankey-back
+    restart: unless-stopped
+    command: ["python", "-m", "app.cli", "watchdog", "--url", "http://backend:8000/api/ready", "--interval", "60"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-leanley}:${POSTGRES_PASSWORD}@db:5432/leankey
+      STORAGE_DIR: /data/files
+      TIMEZONE: America/Santiago
+      ONCALL_WEBHOOK_URL: ${ONCALL_WEBHOOK_URL:-}
+    depends_on:
+      db:
+        condition: service_healthy
   frontend:
     profiles: [web]
     build: ../leankey-front
