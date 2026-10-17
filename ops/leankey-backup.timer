@@ -1,0 +1,8 @@
+[Unit]
+Description=Respaldo coherente LeanKey cada diez minutos
+[Timer]
+OnCalendar=*:0/10
+Persistent=true
+Unit=leankey-backup.service
+[Install]
+WantedBy=timers.target

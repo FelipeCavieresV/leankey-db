@@ -1,0 +1,12 @@
+[Unit]
+Description=Respaldo cifrado LeanKey en destino externo
+# Configurar OnFailure con el servicio real de guardia antes de habilitar.
+[Service]
+Type=oneshot
+User=leankey-backup
+WorkingDirectory=/opt/leankey-back
+EnvironmentFile=/etc/leankey/backup.env
+UMask=0077
+ExecStart=/opt/leankey-back/.venv/bin/python -m app.services.continuity backup --destination /mnt/leankey-backups --config /etc/leankey/runtime.env --config /etc/leankey/compose.yaml
+NoNewPrivileges=true
+PrivateTmp=true
