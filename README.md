@@ -170,3 +170,7 @@ Términos, aprobaciones y eventos son de solo inserción. La migración es idemp
 ## Requisitos no funcionales (sección 21)
 
 `init/026_nonfunctional.sql`, después de 025: desafíos TOTP, políticas por mandante, segundo factor de sesión, enlaces temporales, claves de idempotencia, bitácora de eliminaciones y simulacros inmutables. Triggers revocan sesiones ante cambios de permisos/alcance y capturan fecha local/zona IANA en cada marcación. Migración repetible; no inicia respaldos ni cambia producción. `ops/leankey-backup.*` son plantillas de servicio/temporizador que requieren configurar rutas, custodia externa, alertas y autorización antes de instalarlas. Plan y verificación en `leankey-back/docs/RNF-21.md`.
+
+## Aceptación por etapa (ACE-01 a ACE-06)
+
+`init/027_acceptance.sql`, después de 026: actas versionadas, evidencias, resultados, defectos/eventos y firmas de solo inserción. Relaciona módulos y preparaciones con su acta. Un trigger impide que la misma persona firme técnicamente y por la mandante, y otro bloquea la activación con defectos críticos abiertos bajo exclusión mutua por mandante/módulo. No fabrica aceptaciones para módulos históricos, no activa módulos ni despliega. Aplicación y operación: `leankey-back/docs/ACE-22.md`.
