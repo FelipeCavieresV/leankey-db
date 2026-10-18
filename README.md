@@ -180,3 +180,7 @@ Términos, aprobaciones y eventos son de solo inserción. La migración es idemp
 ## Aceptación por etapa (ACE-01 a ACE-06)
 
 `init/027_acceptance.sql`, después de 026: actas versionadas, evidencias, resultados, defectos/eventos y firmas de solo inserción. Relaciona módulos y preparaciones con su acta. Un trigger impide que la misma persona firme técnicamente y por la mandante, y otro bloquea la activación con defectos críticos abiertos bajo exclusión mutua por mandante/módulo. No fabrica aceptaciones para módulos históricos, no activa módulos ni despliega. Aplicación y operación: `leankey-back/docs/ACE-22.md`.
+
+## Ayuda de acceso sin sesión (029)
+
+`init/029_public_support.sql` agrega una bandeja independiente para solicitudes de ayuda anteriores al ingreso. Es idempotente y no modifica usuarios ni credenciales. En bases existentes, respaldar y ejecutar esta migración desde las fuentes publicadas de `main` antes de levantar el backend actualizado.
