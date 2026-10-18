@@ -47,6 +47,12 @@ Los archivos de evidencia se guardan en el volumen `files_data` (`/data/files` d
 
 ## Tablas y datos
 
+### Permisos independientes de modificación y aprobación (028)
+
+`init/028_independent_actions.sql`, después de 027, incorpora `edit` y `approve` a las cuentas existentes que ya realizaban esas acciones. La conversión se registra en `schema_migrations` y se ejecuta una sola vez: repetir el SQL no repone un permiso revocado. Contratistas y trabajadores no pueden recibir `approve`; los perfiles y el alcance siguen siendo obligatorios.
+
+Requiere el backend/frontend que exigen estos permisos. Preparar respaldo y promover desde `dev` antes de aplicarla en un despliegue expresamente autorizado. La creación de cuentas demo no ejecuta esta migración en producción.
+
 - `reports`: corte, archivo fuente, resumen y encabezados originales.
 - `ksec_contractors`: indicadores por contratista y corte.
 - `ksec_packages`: trabajadores, RUT, estado, prioridad y métricas de sus paquetes.
