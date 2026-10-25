@@ -184,3 +184,7 @@ Términos, aprobaciones y eventos son de solo inserción. La migración es idemp
 ## Ayuda de acceso sin sesión (029)
 
 `init/029_public_support.sql` agrega una bandeja independiente para solicitudes de ayuda anteriores al ingreso. Es idempotente y no modifica usuarios ni credenciales. En bases existentes, respaldar y ejecutar esta migración desde las fuentes publicadas de `main` antes de levantar el backend actualizado.
+
+## Requerimientos por tipo de servicio y función (030)
+
+`init/030_service_type_requirements.sql` agrega los tipos de servicio de la mandante (`service_types`, con `profiles.service_type_id` y `services.service_type_id`), la modalidad «opcional» y el detalle exigible por función en la matriz (`profile_requirements.detail`), los 15 documentos de trabajador de la planilla de requerimientos (IRL, DPS, EPP, RRI, EXO, CVA, CTE, SEC, CDS, DMP, RCX, CUC, RCE, OS1, CPS) y el visto bueno del administrador de la mandante para que Prevención consulte documentos de trabajadores (`prevention_document_access`). El nombre de una función pasa a ser único dentro de su tipo de servicio. Es idempotente; en bases existentes, respaldar y ejecutarla desde `main` antes de levantar el backend actualizado.
